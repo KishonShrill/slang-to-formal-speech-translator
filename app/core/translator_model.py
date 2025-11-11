@@ -1,49 +1,14 @@
-def translate_text(text: str, direction: str) -> str:
-    """
-    Placeholder translation logic.
-    Later replace with a transformer-based model.
-    """
-    ENG_TO_GENZ = {
-        "hello": "yo",
-        "good": "slaps",
-        "great": "slaps",
-        "bad": "mid",
-        "friend": "bestie",
-        "i understand": "bet",
-        "i agree": "bet",
-        "no": "nah",
-        "yes": "bet",
-        "that's funny": "i'm weak",
-        "opinion": "take",
-        "style": "drip",
-        "food": "zaza",
-        "fake": "cap",
-        "lying": "capping"
-    }
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+import torch
 
-    GENZ_TO_ENG = {
-        "yo": "hello",
-        "slaps": "is very good",
-        "mid": "mediocre / bad",
-        "bestie": "friend",
-        "bet": "i understand / i agree / yes",
-        "nah": "no",
-        "i'm weak": "that's funny",
-        "take": "opinion",
-        "drip": "style",
-        "zaza": "food",
-        "cap": "a lie / fake",
-        "capping": "lying"
-    }
+model_name = "t5-small" 
+tokenizer = T5Tokenizer.from_pretrained(model_name)
+model = T5ForConditionalGeneration.from_pretrained(model_name)
 
-    lookup_dict = ENG_TO_GENZ if direction == "eng_to_genz" else GENZ_TO_ENG
+input_text = "Translate English to German: This is a test and e are creating a slang-to-formal translator"
+inputs = tokenizer(input_text, return_tensors="pt")
 
-    words = text.split()
-    result = []
+summary_ids = model.generate(inputs.input_ids, max_length=50, num_beams=5, early_stopping=True)
 
-    for word in words:
-        clean = word.lower().strip(".,!?")
-        result.append(lookup_dict.get(clean, word))
-
-    return " ".join(result)
-
+output_text = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+print("Translation:", output_text)

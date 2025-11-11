@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 pyqt6 = "*"
+datasets = "*"
+sentencepiece = "*"
+accelerate = "*"
+transformers = "*"
 
 [dev-packages]
 
