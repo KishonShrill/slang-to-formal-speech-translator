@@ -1,0 +1,44 @@
+QWidget {
+    background-color: #F8F9FA;
+    color: #212529;
+    font-family: 'Inter', sans-serif;
+}
+
+#TitleLabel {
+    font-size: 20px;
+    font-weight: 600;
+    color: #495057;
+    padding-bottom: 10px;
+}
+
+QTextEdit {
+    background-color: #FFFFFF;
+    border: 1px solid #CED4DA;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+QTextEdit:focus {
+    border: 1px solid #80BDFF;
+}
+
+QComboBox {
+    border: 1px solid #CED4DA;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #FFFFFF;
+}
+
+#TranslateButton {
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+}
+
+#TranslateButton:hover { background-color: #0069D9; }
+#TranslateButton:pressed { background-color: #0056B3; }
+
