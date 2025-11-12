@@ -9,7 +9,7 @@ _model_cache = {
 
 
 def load_model(direction: str):
-    """
+    """ 
     Loads and caches the fine-tuned T5 model for the given direction.
     Example directions: 'eng_to_genz', 'genz_to_eng'
     """
