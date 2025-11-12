@@ -4,11 +4,11 @@
   "description": "🧠 Transformer Model Midterm Project CSC172 & CSC173 — Introduction to Artificial Intelligence",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
-    "prepare": "husky",
     "url": "cj:slang-to-formal-speech-translator"
   },
   "keywords": [],
