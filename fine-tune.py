@@ -7,28 +7,65 @@ from transformers import (
     DataCollatorForSeq2Seq
 )
 import torch
+import pandas as pd
 
 # --- 1. Load Datasets ---
+# Load online datasets
 print("Loading Hugging Face dataset...")
 hf_dataset = load_dataset("Programmer-RD-AI/genz-slang-pairs-1k")
+hf_dataset2 = load_dataset("ai-maker-space/gen-z-translation")
 
-print("Loading local CSV dataset...")
-local_dataset = load_dataset("csv", data_files="genz_normal_sentences.csv")
+# Rename column to standardize
+hf_dataset2 = hf_dataset2.rename_column("English", "normal")
+hf_dataset2 = hf_dataset2.rename_column("Gen-Z", "gen_z")
 
-# --- 1a. Combine Datasets ---
-# We assume both datasets have 'normal' and 'gen_z' columns
-# We take the 'train' split from both and combine them
-print("Combining datasets...")
-combined_dataset = concatenate_datasets(
-    [hf_dataset["train"], local_dataset["train"]]
+# Load local CSV dataset
+print("Loading local CSV datasets...")
+local_dataset = load_dataset("csv", data_files="assets/documents/genz_normal_sentences.csv")
+local_dataset2 = load_dataset("csv", data_files="assets/documents/gen_zz_words.csv")
+
+
+
+# Convert all datasets to pandas DataFrames
+df1 = hf_dataset["train"].to_pandas()
+df2 = hf_dataset2["train"].to_pandas()
+df3 = local_dataset["train"].to_pandas()
+df4 = local_dataset2["train"].to_pandas()
+
+# Concatenate all datasets
+combined_df = pd.concat([df1, df2, df3, df4], ignore_index=True)
+print(f"Total combined rows: {len(combined_df)}")
+
+
+
+# Keep only the columns you want
+combined_df = combined_df[["normal", "gen_z"]]
+combined_df = combined_df[(combined_df["normal"] != "") & (combined_df["gen_z"] != "")]
+
+# Remove surrounding double quotes from both columns
+combined_df["normal"] = combined_df["normal"].str.strip('"').str.strip()
+combined_df["gen_z"] = combined_df["gen_z"].str.strip('"').str.strip()
+
+
+# Save the cleaned CSV
+combined_df.to_csv(
+        "combined_cleaned.csv", 
+        index=False, 
+        encoding="utf-8", 
+        quoting=2,  # 2 = csv.QUOTE_NONE, disables automatic quotes
+        escapechar='\\'  # required to escape any commas in text
 )
-print(f"Total combined samples: {len(combined_dataset)}")
+print("✅ Combined and cleaned CSV saved as 'combined_cleaned.csv'")
 
-# check what columns exist (should be 'normal', 'gen_z')
-print(f"Columns: {combined_dataset.column_names}")
+
+
+final_dataset = load_dataset("csv", data_files="combined_cleaned.csv")["train"]
+print(f"Columns: {final_dataset.column_names}")
+
+
 
 # --- 1b. Split 70/30 ---
-split_dataset = combined_dataset.train_test_split(test_size=0.3, seed=42)
+split_dataset = final_dataset.train_test_split(test_size=0.3, seed=42)
 train_dataset = split_dataset["train"]
 eval_dataset = split_dataset["test"]
 
