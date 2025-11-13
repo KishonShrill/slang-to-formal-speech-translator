@@ -18,7 +18,7 @@ def load_model(direction: str):
     if _model_cache[direction] is not None:
         return _model_cache[direction]
 
-    model_path = f"models/{direction}"  # your fine-tuned model folder
+    model_path = f"models/t5-translator"  # your fine-tuned model folder
     tokenizer = T5Tokenizer.from_pretrained(model_path)
     model = T5ForConditionalGeneration.from_pretrained(model_path)
 

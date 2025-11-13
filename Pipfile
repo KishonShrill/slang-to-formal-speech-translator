@@ -4,7 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+python-dotenv = "*"
+google-generativeai = "*"
+tqdm = "*"
+torch = "*"
+transformers = "*"
 pyqt6 = "*"
+sentencepiece = "*"
+accelerate = "*"
+datasets = "*"
+evaluate = "*"
 
 [dev-packages]
 
